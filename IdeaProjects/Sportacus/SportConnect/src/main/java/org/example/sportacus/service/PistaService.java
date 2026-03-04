@@ -44,7 +44,12 @@ public class PistaService {
     }
 
     public void actualizar(Pista pista) {
-        guardar(pista); // mismas validaciones
+        if (pista.getNombre() == null || pista.getNombre().isBlank())
+            throw new IllegalArgumentException("El nombre no puede estar vacío.");
+        if (pista.getDeporte() == null)
+            throw new IllegalArgumentException("El deporte es obligatorio.");
+        if (pista.getPrecioHora() == null)
+            throw new IllegalArgumentException("El precio es obligatorio.");
         pistaDAO.update(pista);
     }
 

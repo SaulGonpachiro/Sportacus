@@ -29,7 +29,19 @@ public class PistaDAO {
         Transaction transaction = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.merge(pista);
+            session.createQuery(
+                "UPDATE Pista p SET p.nombre = :nombre, p.deporte = :deporte, " +
+                "p.tipoSuperficie = :superficie, p.precioHora = :precio, " +
+                "p.cubierta = :cubierta, p.iluminacion = :iluminacion " +
+                "WHERE p.id = :id")
+                .setParameter("nombre", pista.getNombre())
+                .setParameter("deporte", pista.getDeporte())
+                .setParameter("superficie", pista.getTipoSuperficie())
+                .setParameter("precio", pista.getPrecioHora())
+                .setParameter("cubierta", pista.isCubierta())
+                .setParameter("iluminacion", pista.isIluminacion())
+                .setParameter("id", pista.getId())
+                .executeUpdate();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
