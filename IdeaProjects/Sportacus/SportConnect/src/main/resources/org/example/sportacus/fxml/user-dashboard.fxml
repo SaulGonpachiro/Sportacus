@@ -170,6 +170,9 @@
                         <Button text="Cancelar reserva" onAction="#cancelarReserva" styleClass="topbar-logout"/>
                         <Button text="Eliminar reserva" onAction="#eliminarReserva" styleClass="topbar-logout"/>
                     </HBox>
+                    <HBox fx:id="hboxFiltrosDeporteUser" spacing="14" alignment="CENTER_LEFT">
+                        <Label text="Filtrar por deporte:" styleClass="field-label"/>
+                    </HBox>
                     <TableView fx:id="tablaReservas" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn fx:id="colPista" text="Pista" prefWidth="130"/>

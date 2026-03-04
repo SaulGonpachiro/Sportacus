@@ -58,6 +58,9 @@ public class AdminController implements Initializable {
     @FXML private TableColumn<Reserva, String> colResInicio;
     @FXML private TableColumn<Reserva, String> colResFin;
     @FXML private TableColumn<Reserva, String> colResEstado;
+    @FXML private javafx.scene.layout.HBox hboxFiltrosDeporteAdmin;
+    private final java.util.Set<String> filtrosDeporteAdmin = new java.util.HashSet<>();
+    private java.util.List<Reserva> todasReservasAdmin = new java.util.ArrayList<>();
     @FXML private TableColumn<Reserva, String> colResPrecio;
 
     // Pistas - campos del formulario
@@ -235,8 +238,36 @@ public class AdminController implements Initializable {
     }
 
     private void cargarTablaReservas() {
-        try { tablaReservas.setItems(FXCollections.observableArrayList(reservaService.getAll())); }
-        catch (Exception e) { e.printStackTrace(); }
+        try {
+            todasReservasAdmin = reservaService.getAll();
+            // Construir checkboxes de deporte si aún no están
+            // Reconstruir siempre para incluir deportes nuevos
+            hboxFiltrosDeporteAdmin.getChildren().subList(1, hboxFiltrosDeporteAdmin.getChildren().size()).clear();
+            filtrosDeporteAdmin.clear();
+            {
+                List<Deporte> deportes = deporteService.getAll();
+                for (Deporte d : deportes) {
+                    CheckBox cb = new CheckBox(d.getNombre());
+                    cb.setSelected(true);
+                    cb.setStyle("-fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 13px;");
+                    filtrosDeporteAdmin.add(d.getNombre());
+                    cb.selectedProperty().addListener((obs, o, selected) -> {
+                        if (selected) filtrosDeporteAdmin.add(d.getNombre());
+                        else filtrosDeporteAdmin.remove(d.getNombre());
+                        aplicarFiltroReservasAdmin();
+                    });
+                    hboxFiltrosDeporteAdmin.getChildren().add(cb);
+                }
+            }
+            aplicarFiltroReservasAdmin();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    private void aplicarFiltroReservasAdmin() {
+        List<Reserva> filtradas = todasReservasAdmin.stream()
+                .filter(r -> filtrosDeporteAdmin.contains(r.getDeporteNombre()))
+                .collect(java.util.stream.Collectors.toList());
+        tablaReservas.setItems(FXCollections.observableArrayList(filtradas));
     }
 
     @FXML

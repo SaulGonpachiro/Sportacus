@@ -96,6 +96,9 @@
                         <Button text="Cancelar reserva" onAction="#cancelarReservaAdmin" styleClass="topbar-logout"/>
                         <Button text="Eliminar reserva" onAction="#eliminarReservaAdmin" styleClass="topbar-logout"/>
                     </HBox>
+                    <HBox fx:id="hboxFiltrosDeporteAdmin" spacing="14" alignment="CENTER_LEFT">
+                        <Label text="Filtrar por deporte:" styleClass="field-label"/>
+                    </HBox>
                     <TableView fx:id="tablaReservas" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn fx:id="colResId" text="ID" prefWidth="60"/>

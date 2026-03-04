@@ -68,6 +68,9 @@ public class UserController implements Initializable {
     @FXML private TableColumn<Reserva, String> colFin;
     @FXML private TableColumn<Reserva, String> colEstado;
     @FXML private TableColumn<Reserva, String> colPrecio;
+    @FXML private javafx.scene.layout.HBox hboxFiltrosDeporteUser;
+    private final java.util.Set<String> filtrosDeporteUser = new java.util.HashSet<>();
+    private java.util.List<Reserva> todasReservasUser = new java.util.ArrayList<>();
 
     // Perfil
     @FXML private VBox panelPerfil;
@@ -187,13 +190,11 @@ public class UserController implements Initializable {
         lblPrecioEstimado.setText("Selecciona deporte, fecha y hora para buscar.");
 
         if (nombreDeporte != null) {
-            // Buscar el deporte en el ComboBox y seleccionarlo
             cboDeporte.getItems().stream()
                     .filter(d -> d.getNombre().equalsIgnoreCase(nombreDeporte))
                     .findFirst()
                     .ifPresent(d -> {
                         cboDeporte.setValue(d);
-                        // Auto-buscar si la fecha y hora ya están seleccionadas
                         if (dateFecha.getValue() != null && cboHoraInicio.getValue() != null) {
                             buscarPistas();
                         }
@@ -207,8 +208,35 @@ public class UserController implements Initializable {
         Usuario u = SessionManager.getUsuarioActual();
         if (u == null) return;
         try {
-            tablaReservas.setItems(FXCollections.observableArrayList(reservaService.getMisReservas(u.getId())));
+            todasReservasUser = reservaService.getMisReservas(u.getId());
+            // Construir checkboxes de deporte si aún no están
+            // Reconstruir siempre para incluir deportes nuevos
+            hboxFiltrosDeporteUser.getChildren().subList(1, hboxFiltrosDeporteUser.getChildren().size()).clear();
+            filtrosDeporteUser.clear();
+            {
+                List<Deporte> deportes = deporteService.getAll();
+                for (Deporte d : deportes) {
+                    CheckBox cb = new CheckBox(d.getNombre());
+                    cb.setSelected(true);
+                    cb.setStyle("-fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 13px;");
+                    filtrosDeporteUser.add(d.getNombre());
+                    cb.selectedProperty().addListener((obs, o, selected) -> {
+                        if (selected) filtrosDeporteUser.add(d.getNombre());
+                        else filtrosDeporteUser.remove(d.getNombre());
+                        aplicarFiltroReservasUser();
+                    });
+                    hboxFiltrosDeporteUser.getChildren().add(cb);
+                }
+            }
+            aplicarFiltroReservasUser();
         } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    private void aplicarFiltroReservasUser() {
+        List<Reserva> filtradas = todasReservasUser.stream()
+                .filter(r -> filtrosDeporteUser.contains(r.getDeporteNombre()))
+                .collect(java.util.stream.Collectors.toList());
+        tablaReservas.setItems(FXCollections.observableArrayList(filtradas));
     }
 
     @FXML private void mostrarPerfil() {
