@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane stylesheets="@../css/user.css"
+            xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.sportacus.controller.ReservarController">
+
+    <!-- CABECERA -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="top-bar">
+            <padding><Insets bottom="15" left="30" right="30" top="15"/></padding>
+            <Label text="🏟️ Nueva Reserva" styleClass="top-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="← Volver" onAction="#volverDashboard" styleClass="btn-secondary"/>
+        </HBox>
+    </top>
+
+    <!-- CONTENIDO -->
+    <center>
+        <HBox spacing="30" alignment="TOP_CENTER">
+            <padding><Insets top="30" bottom="30" left="40" right="40"/></padding>
+
+            <!-- Panel izquierdo: filtros -->
+            <VBox spacing="20" prefWidth="380" styleClass="panel-card">
+                <padding><Insets top="25" bottom="25" left="25" right="25"/></padding>
+
+                <Label text="🔍 Buscar disponibilidad" styleClass="section-title"/>
+
+                <VBox spacing="6">
+                    <Label text="Deporte"/>
+                    <ComboBox fx:id="cboDeporte" maxWidth="Infinity" promptText="Selecciona un deporte"/>
+                </VBox>
+
+                <VBox spacing="6">
+                    <Label text="Fecha"/>
+                    <DatePicker fx:id="dateFecha" maxWidth="Infinity"/>
+                </VBox>
+
+                <VBox spacing="6">
+                    <Label text="Hora de inicio"/>
+                    <ComboBox fx:id="cboHoraInicio" maxWidth="Infinity" promptText="Selecciona hora"/>
+                </VBox>
+
+                <VBox spacing="6">
+                    <Label text="Duración"/>
+                    <ComboBox fx:id="cboDuracion" maxWidth="Infinity"/>
+                </VBox>
+
+                <Button text="Buscar pistas disponibles" onAction="#buscarPistas"
+                        maxWidth="Infinity" styleClass="primary-button"/>
+            </VBox>
+
+            <!-- Panel derecho: resultados -->
+            <VBox spacing="20" HBox.hgrow="ALWAYS" styleClass="panel-card">
+                <padding><Insets top="25" bottom="25" left="25" right="25"/></padding>
+
+                <Label text="🏓 Pistas disponibles" styleClass="section-title"/>
+
+                <ListView fx:id="listPistasDisponibles" VBox.vgrow="ALWAYS" prefHeight="300"/>
+
+                <Label fx:id="lblPrecioEstimado" text="Selecciona deporte, fecha y hora para buscar."
+                       styleClass="precio-label" wrapText="true"/>
+
+                <Button text="✅ Confirmar Reserva" onAction="#confirmarReserva"
+                        maxWidth="Infinity" styleClass="primary-button"/>
+            </VBox>
+
+        </HBox>
+    </center>
+
+</BorderPane>

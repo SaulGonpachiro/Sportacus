@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.sportacus.controller.UserController"
+           stylesheets="@../css/user.css">
+
+    <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="true" pickOnBounds="true">
+        <image><Image url="@../images/fondo.png"/></image>
+    </ImageView>
+
+    <BorderPane maxWidth="1400" maxHeight="900" styleClass="app-shell">
+        <top>
+            <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="12">
+                <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
+                <ImageView fitHeight="46" preserveRatio="true">
+                    <image><Image url="@../images/logo.png"/></image>
+                </ImageView>
+                <Label text="Sportacus" styleClass="topbar-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblBienvenida" text="Bienvenido" styleClass="topbar-user"/>
+                <Button text="Cerrar Sesión" styleClass="topbar-logout" onAction="#cerrarSesion" focusTraversable="false"/>
+            </HBox>
+        </top>
+        <left>
+            <VBox styleClass="sidebar" spacing="10">
+                <padding><Insets top="12" right="12" bottom="12" left="12"/></padding>
+                <Button fx:id="navInicio" text="Inicio" styleClass="nav-btn" maxWidth="Infinity" onAction="#mostrarInicio" focusTraversable="false">
+                    <graphic><ImageView fitHeight="18" preserveRatio="true"><image><Image url="@../images/iconos/home.png"/></image></ImageView></graphic>
+                </Button>
+                <Button fx:id="navReservar" text="Reservar Pista" styleClass="nav-btn" maxWidth="Infinity" onAction="#mostrarReservar" focusTraversable="false">
+                    <graphic><ImageView fitHeight="18" preserveRatio="true"><image><Image url="@../images/iconos/reservas.png"/></image></ImageView></graphic>
+                </Button>
+                <Button fx:id="navMisReservas" text="Mis Reservas" styleClass="nav-btn" maxWidth="Infinity" onAction="#mostrarMisReservas" focusTraversable="false">
+                    <graphic><ImageView fitHeight="18" preserveRatio="true"><image><Image url="@../images/iconos/historial.png"/></image></ImageView></graphic>
+                </Button>
+                <Button fx:id="navPerfil" text="Mi Perfil" styleClass="nav-btn" maxWidth="Infinity" onAction="#mostrarPerfil" focusTraversable="false">
+                    <graphic><ImageView fitHeight="18" preserveRatio="true"><image><Image url="@../images/iconos/usuarios.png"/></image></ImageView></graphic>
+                </Button>
+                <Region VBox.vgrow="ALWAYS"/>
+            </VBox>
+        </left>
+        <center>
+            <StackPane fx:id="contenidoCentral">
+
+                <!-- PANEL INICIO -->
+                <VBox fx:id="panelInicio" styleClass="content" spacing="10" visible="true" managed="true">
+                    <padding><Insets top="14" right="16" bottom="14" left="16"/></padding>
+                    <VBox spacing="4">
+                        <Label fx:id="lblHeroTitle" text="Hola!" styleClass="hero-title"/>
+                        <Label text="Reserva tus pistas deportivas favoritas" styleClass="hero-sub"/>
+                    </VBox>
+                    <GridPane hgap="12" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                            <ColumnConstraints hgrow="ALWAYS" percentWidth="25"/>
+                        </columnConstraints>
+                        <StackPane styleClass="sport-card" GridPane.columnIndex="0">
+                            <VBox spacing="8">
+                                <StackPane styleClass="sport-img-wrap">
+                                    <clip><Rectangle width="260" height="125" arcWidth="16" arcHeight="16"/></clip>
+                                    <ImageView fitWidth="260" fitHeight="125" preserveRatio="true"><image><Image url="@../images/Basket.png"/></image></ImageView>
+                                </StackPane>
+                                <HBox styleClass="sport-bottom" alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="Baloncesto" styleClass="sport-title"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button text="Reservar" styleClass="reserve-btn" onAction="#reservarBaloncesto" focusTraversable="false"/>
+                                </HBox>
+                            </VBox>
+                        </StackPane>
+                        <StackPane styleClass="sport-card" GridPane.columnIndex="1">
+                            <VBox spacing="8">
+                                <StackPane styleClass="sport-img-wrap">
+                                    <clip><Rectangle width="260" height="125" arcWidth="16" arcHeight="16"/></clip>
+                                    <ImageView fitWidth="260" fitHeight="125" preserveRatio="true"><image><Image url="@../images/tenis.png"/></image></ImageView>
+                                </StackPane>
+                                <HBox styleClass="sport-bottom" alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="Tenis" styleClass="sport-title"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button text="Reservar" styleClass="reserve-btn" onAction="#reservarTenis" focusTraversable="false"/>
+                                </HBox>
+                            </VBox>
+                        </StackPane>
+                        <StackPane styleClass="sport-card" GridPane.columnIndex="2">
+                            <VBox spacing="8">
+                                <StackPane styleClass="sport-img-wrap">
+                                    <clip><Rectangle width="260" height="125" arcWidth="16" arcHeight="16"/></clip>
+                                    <ImageView fitWidth="260" fitHeight="125" preserveRatio="true"><image><Image url="@../images/padel.png"/></image></ImageView>
+                                </StackPane>
+                                <HBox styleClass="sport-bottom" alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="Pádel" styleClass="sport-title"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button text="Reservar" styleClass="reserve-btn" onAction="#reservarPadel" focusTraversable="false"/>
+                                </HBox>
+                            </VBox>
+                        </StackPane>
+                        <StackPane styleClass="sport-card" GridPane.columnIndex="3">
+                            <VBox spacing="8">
+                                <StackPane styleClass="sport-img-wrap">
+                                    <clip><Rectangle width="260" height="125" arcWidth="16" arcHeight="16"/></clip>
+                                    <ImageView fitWidth="260" fitHeight="125" preserveRatio="true"><image><Image url="@../images/Futbol.png"/></image></ImageView>
+                                </StackPane>
+                                <HBox styleClass="sport-bottom" alignment="CENTER_LEFT" spacing="8">
+                                    <Label text="Fútbol" styleClass="sport-title"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button text="Reservar" styleClass="reserve-btn" onAction="#reservarFutbol" focusTraversable="false"/>
+                                </HBox>
+                            </VBox>
+                        </StackPane>
+                    </GridPane>
+                    <VBox styleClass="panel" spacing="8">
+                        <Label text="Mis Proximas Reservas" styleClass="panel-title"/>
+                        <TableView fx:id="tablaProximas" prefHeight="180">
+                            <columns>
+                                <TableColumn fx:id="colProxPista" text="Pista" prefWidth="140"/>
+                                <TableColumn fx:id="colProxDeporte" text="Deporte" prefWidth="110"/>
+                                <TableColumn fx:id="colProxInicio" text="Inicio" prefWidth="150"/>
+                                <TableColumn fx:id="colProxFin" text="Fin" prefWidth="150"/>
+                                <TableColumn fx:id="colProxPrecio" text="Precio" prefWidth="90"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </VBox>
+
+                <!-- PANEL RESERVAR -->
+                <VBox fx:id="panelReservar" styleClass="content" spacing="15" visible="false" managed="false">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                    <Label text="Nueva Reserva" styleClass="hero-title"/>
+                    <HBox spacing="20" VBox.vgrow="ALWAYS" alignment="TOP_LEFT">
+                        <!-- Panel filtros izquierdo -->
+                        <VBox spacing="12" styleClass="panel" prefWidth="320" minWidth="280" maxWidth="340">
+                            <Label text="Buscar disponibilidad" styleClass="panel-title"/>
+                            <Label text="Deporte" styleClass="field-label"/>
+                            <ComboBox fx:id="cboDeporte" maxWidth="Infinity" promptText="Selecciona deporte"/>
+                            <Label text="Fecha" styleClass="field-label"/>
+                            <DatePicker fx:id="dateFecha" maxWidth="Infinity"/>
+                            <Label text="Hora de inicio" styleClass="field-label"/>
+                            <ComboBox fx:id="cboHoraInicio" maxWidth="Infinity" promptText="Selecciona hora"/>
+                            <Label text="Duración" styleClass="field-label"/>
+                            <ComboBox fx:id="cboDuracion" maxWidth="Infinity"/>
+                            <Button text="Buscar pistas disponibles" onAction="#buscarPistas" maxWidth="Infinity" styleClass="primary-button"/>
+                        </VBox>
+                        <!-- Panel resultados derecho -->
+                        <VBox spacing="10" styleClass="panel" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                            <Label text="Pistas disponibles" styleClass="panel-title"/>
+                            <ListView fx:id="listPistasDisponibles" VBox.vgrow="ALWAYS" minHeight="200" maxHeight="400"/>
+                            <Label fx:id="lblPrecioEstimado"
+                                   text="Selecciona deporte, fecha y hora para buscar."
+                                   wrapText="true" styleClass="precio-label"/>
+                            <Button text="✅  Confirmar Reserva" onAction="#confirmarReserva"
+                                    maxWidth="Infinity" styleClass="primary-button" minHeight="38"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- PANEL MIS RESERVAS -->
+                <VBox fx:id="panelMisReservas" styleClass="content" spacing="15" visible="false" managed="false">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="Mis Reservas" styleClass="hero-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Cancelar reserva" onAction="#cancelarReserva" styleClass="topbar-logout"/>
+                        <Button text="Eliminar reserva" onAction="#eliminarReserva" styleClass="topbar-logout"/>
+                    </HBox>
+                    <HBox fx:id="hboxFiltrosDeporteUser" spacing="14" alignment="CENTER_LEFT">
+                        <Label text="Filtrar por deporte:" styleClass="field-label"/>
+                    </HBox>
+                    <TableView fx:id="tablaReservas" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colPista" text="Pista" prefWidth="130"/>
+                            <TableColumn fx:id="colDeporte" text="Deporte" prefWidth="110"/>
+                            <TableColumn fx:id="colInicio" text="Inicio" prefWidth="150"/>
+                            <TableColumn fx:id="colFin" text="Fin" prefWidth="150"/>
+                            <TableColumn fx:id="colEstado" text="Estado" prefWidth="110"/>
+                            <TableColumn fx:id="colPrecio" text="Precio" prefWidth="90"/>
+                        </columns>
+                    </TableView>
+                    <HBox alignment="CENTER" spacing="12">
+                        <Button fx:id="btnResPrev" text="◀ Anterior" onAction="#reservasPrevPage" styleClass="primary-button"/>
+                        <Label fx:id="lblResPagina" text="Página 1 de 1" styleClass="field-label"/>
+                        <Button fx:id="btnResNext" text="Siguiente ▶" onAction="#reservasNextPage" styleClass="primary-button"/>
+                    </HBox>
+                </VBox>
+
+                <!-- PANEL PERFIL -->
+                <VBox fx:id="panelPerfil" styleClass="content" spacing="20" visible="false" managed="false">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                    <Label text="Mi Perfil" styleClass="hero-title"/>
+                    <HBox spacing="20" alignment="TOP_LEFT">
+                        <VBox spacing="12" styleClass="panel" prefWidth="360">
+                            <Label text="Datos personales" styleClass="panel-title"/>
+                            <Label text="Nombre" styleClass="field-label"/>
+                            <TextField fx:id="txtPerfilNombre" promptText="Nombre"/>
+                            <Label text="Apellidos" styleClass="field-label"/>
+                            <TextField fx:id="txtPerfilApellidos" promptText="Apellidos"/>
+                            <Label text="Email" styleClass="field-label"/>
+                            <TextField fx:id="txtPerfilEmail" promptText="Email" editable="false"/>
+                            <Label text="Teléfono" styleClass="field-label"/>
+                            <TextField fx:id="txtPerfilTelefono" promptText="Teléfono"/>
+                            <Label text="Nueva contraseña (vacío = no cambiar)" styleClass="field-label"/>
+                            <PasswordField fx:id="txtPerfilPassword" promptText="Nueva contraseña"/>
+                            <Button text="Guardar cambios" onAction="#guardarPerfil" maxWidth="Infinity" styleClass="primary-button"/>
+                        </VBox>
+                        <VBox spacing="14" HBox.hgrow="ALWAYS">
+                            <HBox spacing="14">
+                                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="6">
+                                    <Label fx:id="lblPerfilTotalReservas" text="0" styleClass="stat-value"/>
+                                    <Label text="Total reservas" styleClass="stat-sub"/>
+                                </VBox>
+                                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="6">
+                                    <Label fx:id="lblPerfilProximas" text="0" styleClass="stat-value"/>
+                                    <Label text="Próximas" styleClass="stat-sub"/>
+                                </VBox>
+                                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="6">
+                                    <Label fx:id="lblPerfilGastado" text="0,00 €" styleClass="stat-value"/>
+                                    <Label text="Total gastado" styleClass="stat-sub"/>
+                                </VBox>
+                            </HBox>
+                            <VBox styleClass="panel" VBox.vgrow="ALWAYS" spacing="8">
+                                <Label text="Últimas reservas" styleClass="panel-title"/>
+                                <TableView fx:id="tablaPerfilReservas" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colPerfilPista"   text="Pista"   prefWidth="130"/>
+                                        <TableColumn fx:id="colPerfilDeporte" text="Deporte" prefWidth="110"/>
+                                        <TableColumn fx:id="colPerfilInicio"  text="Inicio"  prefWidth="150"/>
+                                        <TableColumn fx:id="colPerfilEstado"  text="Estado"  prefWidth="110"/>
+                                        <TableColumn fx:id="colPerfilPrecio"  text="Precio"  prefWidth="90"/>
+                                    </columns>
+                                </TableView>
+                            </VBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+            </StackPane>
+        </center>
+    </BorderPane>
+</StackPane>
