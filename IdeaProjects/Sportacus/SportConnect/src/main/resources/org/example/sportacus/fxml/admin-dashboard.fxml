@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.sportacus.controller.AdminController"
+           stylesheets="@../css/admin.css">
+
+    <ImageView fitWidth="1920" fitHeight="1080" preserveRatio="true" pickOnBounds="true">
+        <image><Image url="@../images/fondo.png"/></image>
+    </ImageView>
+
+    <BorderPane maxWidth="1500" maxHeight="900" styleClass="app-shell">
+        <top>
+            <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="12">
+                <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+                <ImageView fitHeight="52" preserveRatio="true">
+                    <image><Image url="@../images/logo.png"/></image>
+                </ImageView>
+                <Label text="Sportacus - Admin" styleClass="topbar-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblAdminNombre" text="Administrador" styleClass="topbar-user"/>
+                <Button text="Cerrar Sesion" styleClass="topbar-logout" onAction="#cerrarSesion" focusTraversable="false"/>
+            </HBox>
+        </top>
+        <left>
+            <VBox styleClass="sidebar" spacing="10">
+                <padding><Insets top="14" right="12" bottom="14" left="12"/></padding>
+                <Button fx:id="navInicio" text="Inicio" styleClass="nav-btn" maxWidth="Infinity" onAction="#mostrarInicio" focusTraversable="false">
+                    <graphic><ImageView fitHeight="18" preserveRatio="true"><image><Image url="@../images/iconos/home.png"/></image></ImageView></graphic>
+                </Button>
+                <Button fx:id="navReservas" text="Reservas" styleClass="nav-btn" maxWidth="Infinity" onAction="#mostrarReservas" focusTraversable="false">
+                    <graphic><ImageView fitHeight="18" preserveRatio="true"><image><Image url="@../images/iconos/gestion_reservas.png"/></image></ImageView></graphic>
+                </Button>
+                <Button fx:id="navPistas" text="Pistas" styleClass="nav-btn" maxWidth="Infinity" onAction="#mostrarPistas" focusTraversable="false">
+                    <graphic><ImageView fitHeight="18" preserveRatio="true"><image><Image url="@../images/iconos/gestion_pistas.png"/></image></ImageView></graphic>
+                </Button>
+                <Button fx:id="navUsuarios" text="Usuarios" styleClass="nav-btn" maxWidth="Infinity" onAction="#mostrarUsuarios" focusTraversable="false">
+                    <graphic><ImageView fitHeight="18" preserveRatio="true"><image><Image url="@../images/iconos/gestion_usuarios.png"/></image></ImageView></graphic>
+                </Button>
+                <Button fx:id="navDeportes" text="Deportes" styleClass="nav-btn" maxWidth="Infinity" onAction="#mostrarDeportes" focusTraversable="false">
+                    <graphic><ImageView fitHeight="18" preserveRatio="true"><image><Image url="@../images/iconos/reportes.png"/></image></ImageView></graphic>
+                </Button>
+                <Button fx:id="navPerfil" text="Mi Perfil" styleClass="nav-btn" maxWidth="Infinity" onAction="#mostrarPerfil" focusTraversable="false">
+                    <graphic><ImageView fitHeight="18" preserveRatio="true"><image><Image url="@../images/iconos/gestion_usuarios.png"/></image></ImageView></graphic>
+                </Button>
+                <Region VBox.vgrow="ALWAYS"/>
+            </VBox>
+        </left>
+
+        <center>
+            <StackPane>
+
+                <!-- PANEL INICIO -->
+                <VBox fx:id="panelInicio" styleClass="content" spacing="16" visible="true" managed="true">
+                    <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+                    <Label text="Panel de Administracion" styleClass="hero-title"/>
+                    <HBox spacing="16">
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="6">
+                            <Label fx:id="lblTotalReservas" text="0" styleClass="stat-value"/>
+                            <Label text="Total Reservas" styleClass="stat-sub"/>
+                        </VBox>
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="6">
+                            <Label fx:id="lblTotalUsuarios" text="0" styleClass="stat-value"/>
+                            <Label text="Usuarios" styleClass="stat-sub"/>
+                        </VBox>
+                        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="6">
+                            <Label fx:id="lblTotalPistas" text="0" styleClass="stat-value"/>
+                            <Label text="Pistas activas" styleClass="stat-sub"/>
+                        </VBox>
+                    </HBox>
+                    <VBox styleClass="panel" spacing="8">
+                        <Label text="Ultimas Reservas" styleClass="panel-title"/>
+                        <TableView fx:id="tablaUltimasReservas" prefHeight="300">
+                            <columns>
+                                <TableColumn fx:id="colURUsuario" text="Usuario" prefWidth="160"/>
+                                <TableColumn fx:id="colURPista" text="Pista" prefWidth="120"/>
+                                <TableColumn fx:id="colURInicio" text="Inicio" prefWidth="150"/>
+                                <TableColumn fx:id="colUREstado" text="Estado" prefWidth="110"/>
+                                <TableColumn fx:id="colURPrecio" text="Precio" prefWidth="90"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </VBox>
+
+                <!-- PANEL RESERVAS -->
+                <VBox fx:id="panelReservas" styleClass="content" spacing="12" visible="false" managed="false">
+                    <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="Gestion de Reservas" styleClass="hero-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button text="Cancelar reserva" onAction="#cancelarReservaAdmin" styleClass="topbar-logout"/>
+                        <Button text="Eliminar reserva" onAction="#eliminarReservaAdmin" styleClass="topbar-logout"/>
+                    </HBox>
+                    <TableView fx:id="tablaReservas" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colResId" text="ID" prefWidth="60"/>
+                            <TableColumn fx:id="colResUsuario" text="Usuario" prefWidth="160"/>
+                            <TableColumn fx:id="colResPista" text="Pista" prefWidth="120"/>
+                            <TableColumn fx:id="colResInicio" text="Inicio" prefWidth="150"/>
+                            <TableColumn fx:id="colResFin" text="Fin" prefWidth="150"/>
+                            <TableColumn fx:id="colResEstado" text="Estado" prefWidth="110"/>
+                            <TableColumn fx:id="colResPrecio" text="Precio" prefWidth="90"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <!-- PANEL PISTAS -->
+                <VBox fx:id="panelPistas" styleClass="content" spacing="12" visible="false" managed="false">
+                    <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+                    <Label text="Gestion de Pistas" styleClass="hero-title"/>
+                    <HBox spacing="20" VBox.vgrow="ALWAYS">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <HBox spacing="8">
+                                <Button text="Editar seleccionada" onAction="#editarPista" styleClass="primary-button"/>
+                                <Button text="Desactivar" onAction="#eliminarPista" styleClass="topbar-logout"/>
+                                <Button text="Eliminar" onAction="#eliminarPistaFisico" styleClass="topbar-logout"/>
+                            </HBox>
+                            <TableView fx:id="tablaPistas" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="colPistaId" text="ID" prefWidth="50"/>
+                                    <TableColumn fx:id="colPistaNombre" text="Nombre" prefWidth="120"/>
+                                    <TableColumn fx:id="colPistaDeporte" text="Deporte" prefWidth="110"/>
+                                    <TableColumn fx:id="colPistaSuperficie" text="Superficie" prefWidth="110"/>
+                                    <TableColumn fx:id="colPistaPrecio" text="Precio/h" prefWidth="90"/>
+                                    <TableColumn fx:id="colPistaActiva" text="Activa" prefWidth="70"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                        <VBox spacing="10" styleClass="panel" prefWidth="280">
+                            <Label fx:id="lblFormPistaTitulo" text="Nueva Pista" styleClass="panel-title"/>
+                            <Label text="Nombre" styleClass="field-label"/>
+                            <TextField fx:id="txtPistaNombre" promptText="Ej: Tenis 3"/>
+                            <Label text="Deporte" styleClass="field-label"/>
+                            <ComboBox fx:id="cboPistaDeporte" maxWidth="Infinity"/>
+                            <Label text="Superficie" styleClass="field-label"/>
+                            <TextField fx:id="txtPistaSuperficie" promptText="Ej: Cemento"/>
+                            <Label text="Precio por hora (EUR)" styleClass="field-label"/>
+                            <TextField fx:id="txtPistaPrecio" promptText="Ej: 12.00"/>
+                            <CheckBox fx:id="chkPistaCubierta" text="Cubierta"/>
+                            <CheckBox fx:id="chkPistaIluminacion" text="Iluminación"/>
+                            <HBox spacing="8">
+                                <Button fx:id="btnGuardarPista" text="Guardar Pista" onAction="#guardarPista"
+                                        maxWidth="Infinity" styleClass="primary-button" HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="btnCancelarEdicion" text="✕" onAction="#cancelarEdicionPista"
+                                        styleClass="topbar-logout" visible="false" managed="false"/>
+                            </HBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- PANEL USUARIOS -->
+                <VBox fx:id="panelUsuarios" styleClass="content" spacing="12" visible="false" managed="false">
+                    <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+                    <Label text="Gestion de Usuarios" styleClass="hero-title"/>
+                    <HBox spacing="20" VBox.vgrow="ALWAYS">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <HBox spacing="8">
+                                <Button text="Desactivar usuario" onAction="#desactivarUsuario" styleClass="topbar-logout"/>
+                                <Button text="Eliminar usuario" onAction="#eliminarUsuario" styleClass="topbar-logout"/>
+                            </HBox>
+                            <TableView fx:id="tablaUsuarios" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="colUsuId" text="ID" prefWidth="50"/>
+                                    <TableColumn fx:id="colUsuNombre" text="Nombre" prefWidth="160"/>
+                                    <TableColumn fx:id="colUsuEmail" text="Email" prefWidth="200"/>
+                                    <TableColumn fx:id="colUsuRol" text="Rol" prefWidth="80"/>
+                                    <TableColumn fx:id="colUsuActivo" text="Activo" prefWidth="70"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <!-- PANEL DEPORTES -->
+                <VBox fx:id="panelDeportes" styleClass="content" spacing="12" visible="false" managed="false">
+                    <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+                    <Label text="Gestion de Deportes" styleClass="hero-title"/>
+                    <HBox spacing="20" VBox.vgrow="ALWAYS">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS">
+                            <HBox spacing="8">
+                                <Button text="Eliminar deporte" onAction="#eliminarDeporte" styleClass="topbar-logout"/>
+                            </HBox>
+                            <TableView fx:id="tablaDeportes" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="colDepId" text="ID" prefWidth="60"/>
+                                    <TableColumn fx:id="colDepNombre" text="Nombre" prefWidth="200"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                        <VBox spacing="10" styleClass="panel" prefWidth="260">
+                            <Label text="Nuevo Deporte" styleClass="panel-title"/>
+                            <Label text="Nombre del deporte"/>
+                            <TextField fx:id="txtDeporteNombre" promptText="Ej: Voleibol"/>
+                            <Button text="Guardar Deporte" onAction="#guardarDeporte" maxWidth="Infinity" styleClass="primary-button"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- PANEL PERFIL ADMIN -->
+                <VBox fx:id="panelPerfil" styleClass="content" spacing="20" visible="false" managed="false">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                    <Label text="Mi Perfil" styleClass="hero-title"/>
+                    <HBox spacing="20" alignment="TOP_LEFT">
+                        <VBox spacing="12" styleClass="panel" prefWidth="360">
+                            <Label text="Datos personales" styleClass="panel-title"/>
+                            <Label text="Nombre" styleClass="field-label"/>
+                            <TextField fx:id="txtPerfilNombre" promptText="Nombre"/>
+                            <Label text="Apellidos" styleClass="field-label"/>
+                            <TextField fx:id="txtPerfilApellidos" promptText="Apellidos"/>
+                            <Label text="Email" styleClass="field-label"/>
+                            <TextField fx:id="txtPerfilEmail" promptText="Email" editable="false"/>
+                            <Label text="Teléfono" styleClass="field-label"/>
+                            <TextField fx:id="txtPerfilTelefono" promptText="Teléfono"/>
+                            <Label text="Nueva contraseña (vacío = no cambiar)" styleClass="field-label"/>
+                            <PasswordField fx:id="txtPerfilPassword" promptText="Nueva contraseña"/>
+                            <Button text="Guardar cambios" onAction="#guardarPerfil" maxWidth="Infinity" styleClass="primary-button"/>
+                        </VBox>
+                        <VBox spacing="14" HBox.hgrow="ALWAYS">
+                            <HBox spacing="14">
+                                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="6">
+                                    <Label fx:id="lblPerfilTotalUsuarios" text="0" styleClass="stat-value"/>
+                                    <Label text="Usuarios registrados" styleClass="stat-sub"/>
+                                </VBox>
+                                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="6">
+                                    <Label fx:id="lblPerfilTotalReservas" text="0" styleClass="stat-value"/>
+                                    <Label text="Reservas totales" styleClass="stat-sub"/>
+                                </VBox>
+                                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="6">
+                                    <Label fx:id="lblPerfilTotalPistas" text="0" styleClass="stat-value"/>
+                                    <Label text="Pistas activas" styleClass="stat-sub"/>
+                                </VBox>
+                            </HBox>
+                            <VBox styleClass="panel" spacing="8">
+                                <Label text="Información de cuenta" styleClass="panel-title"/>
+                                <Label fx:id="lblPerfilRol"          text="Rol: ADMIN"  styleClass="field-label"/>
+                                <Label fx:id="lblPerfilFechaRegistro" text="Registrado: -" styleClass="field-label"/>
+                                <Label fx:id="lblPerfilUltimoLogin"   text="Último acceso: -" styleClass="field-label"/>
+                            </VBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+            </StackPane>
+        </center>
+    </BorderPane>
+</StackPane>

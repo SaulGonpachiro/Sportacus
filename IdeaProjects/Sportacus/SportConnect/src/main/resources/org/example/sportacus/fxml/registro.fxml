@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane stylesheets="@../css/login.css"
+           xmlns="http://javafx.com/javafx/17.0.2-ea"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="org.example.sportacus.controller.RegistroController">
+
+    <children>
+
+        <!-- FONDO -->
+        <ImageView fitHeight="1200" fitWidth="2000" preserveRatio="false">
+            <image>
+                <Image url="@../images/fondo.png" />
+            </image>
+        </ImageView>
+
+        <!-- CONTENIDO -->
+        <VBox alignment="CENTER" spacing="40">
+
+            <ImageView fitHeight="180" preserveRatio="true">
+                <image>
+                    <Image url="@../images/logo_completo.png" />
+                </image>
+                <VBox.margin>
+                    <Insets right="80.0" />
+                </VBox.margin>
+            </ImageView>
+
+            <VBox alignment="CENTER" maxWidth="450" spacing="25" styleClass="login-card">
+
+                <Label styleClass="title-label" text="Crear cuenta" />
+
+                <TextField fx:id="nameField" promptText="Nombre" styleClass="input-field" />
+
+                <TextField fx:id="apellidosField" promptText="Apellidos" styleClass="input-field" />
+
+                <TextField fx:id="telefonoField" promptText="Teléfono" styleClass="input-field" />
+
+                <TextField fx:id="emailField" promptText="Correo electrónico" styleClass="input-field" />
+
+                <PasswordField fx:id="passwordField" promptText="Contraseña" styleClass="input-field" />
+
+                <Button maxWidth="Infinity" onAction="#handleRegistro" styleClass="primary-button" text="Crear cuenta" />
+
+                <Button maxWidth="Infinity" onAction="#volverLogin" styleClass="secondary-button" text="Ya tengo cuenta" />
+
+            </VBox>
+
+        </VBox>
+
+    </children>
+
+</StackPane>
