@@ -183,6 +183,11 @@
                             <TableColumn fx:id="colPrecio" text="Precio" prefWidth="90"/>
                         </columns>
                     </TableView>
+                    <HBox alignment="CENTER" spacing="12">
+                        <Button fx:id="btnResPrev" text="◀ Anterior" onAction="#reservasPrevPage" styleClass="primary-button"/>
+                        <Label fx:id="lblResPagina" text="Página 1 de 1" styleClass="field-label"/>
+                        <Button fx:id="btnResNext" text="Siguiente ▶" onAction="#reservasNextPage" styleClass="primary-button"/>
+                    </HBox>
                 </VBox>
 
                 <!-- PANEL PERFIL -->

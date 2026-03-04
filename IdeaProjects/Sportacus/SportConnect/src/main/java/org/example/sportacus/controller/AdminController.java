@@ -113,6 +113,17 @@ public class AdminController implements Initializable {
 
     private final ReservaService reservaService = new ReservaService();
     private final UsuarioService usuarioService = new UsuarioService();
+
+    // Paginación reservas
+    private static final int PAGE_SIZE = 20;
+    private int paginaReservas = 0;
+    private int paginaUsuarios = 0;
+    @FXML private javafx.scene.control.Button btnResPrev;
+    @FXML private javafx.scene.control.Button btnResNext;
+    @FXML private Label lblResPagina;
+    @FXML private javafx.scene.control.Button btnUsuPrev;
+    @FXML private javafx.scene.control.Button btnUsuNext;
+    @FXML private Label lblUsuPagina;
     private final PistaService pistaService = new PistaService();
     private final DeporteService deporteService = new DeporteService();
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
@@ -238,26 +249,23 @@ public class AdminController implements Initializable {
     }
 
     private void cargarTablaReservas() {
+        paginaReservas = 0;
         try {
             todasReservasAdmin = reservaService.getAll();
-            // Construir checkboxes de deporte si aún no están
-            // Reconstruir siempre para incluir deportes nuevos
             hboxFiltrosDeporteAdmin.getChildren().subList(1, hboxFiltrosDeporteAdmin.getChildren().size()).clear();
             filtrosDeporteAdmin.clear();
-            {
-                List<Deporte> deportes = deporteService.getAll();
-                for (Deporte d : deportes) {
-                    CheckBox cb = new CheckBox(d.getNombre());
-                    cb.setSelected(true);
-                    cb.setStyle("-fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 13px;");
-                    filtrosDeporteAdmin.add(d.getNombre());
-                    cb.selectedProperty().addListener((obs, o, selected) -> {
-                        if (selected) filtrosDeporteAdmin.add(d.getNombre());
-                        else filtrosDeporteAdmin.remove(d.getNombre());
-                        aplicarFiltroReservasAdmin();
-                    });
-                    hboxFiltrosDeporteAdmin.getChildren().add(cb);
-                }
+            for (Deporte d : deporteService.getAll()) {
+                CheckBox cb = new CheckBox(d.getNombre());
+                cb.setSelected(true);
+                cb.setStyle("-fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 13px;");
+                filtrosDeporteAdmin.add(d.getNombre());
+                cb.selectedProperty().addListener((obs, o, selected) -> {
+                    if (selected) filtrosDeporteAdmin.add(d.getNombre());
+                    else filtrosDeporteAdmin.remove(d.getNombre());
+                    paginaReservas = 0;
+                    aplicarFiltroReservasAdmin();
+                });
+                hboxFiltrosDeporteAdmin.getChildren().add(cb);
             }
             aplicarFiltroReservasAdmin();
         } catch (Exception e) { e.printStackTrace(); }
@@ -267,8 +275,19 @@ public class AdminController implements Initializable {
         List<Reserva> filtradas = todasReservasAdmin.stream()
                 .filter(r -> filtrosDeporteAdmin.contains(r.getDeporteNombre()))
                 .collect(java.util.stream.Collectors.toList());
-        tablaReservas.setItems(FXCollections.observableArrayList(filtradas));
+        int total = filtradas.size();
+        int totalPaginas = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
+        paginaReservas = Math.min(paginaReservas, totalPaginas - 1);
+        int desde = paginaReservas * PAGE_SIZE;
+        tablaReservas.setItems(FXCollections.observableArrayList(
+                filtradas.subList(desde, Math.min(desde + PAGE_SIZE, total))));
+        lblResPagina.setText("Página " + (paginaReservas + 1) + " de " + totalPaginas);
+        btnResPrev.setDisable(paginaReservas == 0);
+        btnResNext.setDisable(paginaReservas >= totalPaginas - 1);
     }
+
+    @FXML private void reservasPrevPage() { paginaReservas--; aplicarFiltroReservasAdmin(); }
+    @FXML private void reservasNextPage() { paginaReservas++; aplicarFiltroReservasAdmin(); }
 
     @FXML
     private void cancelarReservaAdmin() {
@@ -441,10 +460,30 @@ public class AdminController implements Initializable {
         colUsuActivo.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().isActivo() ? "Sí" : "No"));
     }
 
+    private java.util.List<Usuario> todosUsuarios = new java.util.ArrayList<>();
+
     private void cargarTablaUsuarios() {
-        try { tablaUsuarios.setItems(FXCollections.observableArrayList(usuarioService.getAll())); }
-        catch (Exception e) { e.printStackTrace(); }
+        paginaUsuarios = 0;
+        try {
+            todosUsuarios = usuarioService.getAll();
+            aplicarPaginaUsuarios();
+        } catch (Exception e) { e.printStackTrace(); }
     }
+
+    private void aplicarPaginaUsuarios() {
+        int total = todosUsuarios.size();
+        int totalPaginas = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
+        paginaUsuarios = Math.min(paginaUsuarios, totalPaginas - 1);
+        int desde = paginaUsuarios * PAGE_SIZE;
+        tablaUsuarios.setItems(FXCollections.observableArrayList(
+                todosUsuarios.subList(desde, Math.min(desde + PAGE_SIZE, total))));
+        lblUsuPagina.setText("Página " + (paginaUsuarios + 1) + " de " + totalPaginas);
+        btnUsuPrev.setDisable(paginaUsuarios == 0);
+        btnUsuNext.setDisable(paginaUsuarios >= totalPaginas - 1);
+    }
+
+    @FXML private void usuariosPrevPage() { paginaUsuarios--; aplicarPaginaUsuarios(); }
+    @FXML private void usuariosNextPage() { paginaUsuarios++; aplicarPaginaUsuarios(); }
 
     @FXML
     private void desactivarUsuario() {

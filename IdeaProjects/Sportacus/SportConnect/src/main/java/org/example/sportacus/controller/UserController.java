@@ -91,6 +91,13 @@ public class UserController implements Initializable {
 
     private final ReservaService reservaService = new ReservaService();
     private final DeporteService deporteService = new DeporteService();
+
+    // Paginación mis reservas
+    private static final int PAGE_SIZE = 20;
+    private int paginaReservas = 0;
+    @FXML private javafx.scene.control.Button btnResPrev;
+    @FXML private javafx.scene.control.Button btnResNext;
+    @FXML private Label lblResPagina;
     private final PistaService pistaService = new PistaService();
     private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
@@ -205,28 +212,25 @@ public class UserController implements Initializable {
     @FXML private void mostrarMisReservas() {
         mostrarPanel(panelMisReservas);
         setNavActivo(navMisReservas);
+        paginaReservas = 0;
         Usuario u = SessionManager.getUsuarioActual();
         if (u == null) return;
         try {
             todasReservasUser = reservaService.getMisReservas(u.getId());
-            // Construir checkboxes de deporte si aún no están
-            // Reconstruir siempre para incluir deportes nuevos
             hboxFiltrosDeporteUser.getChildren().subList(1, hboxFiltrosDeporteUser.getChildren().size()).clear();
             filtrosDeporteUser.clear();
-            {
-                List<Deporte> deportes = deporteService.getAll();
-                for (Deporte d : deportes) {
-                    CheckBox cb = new CheckBox(d.getNombre());
-                    cb.setSelected(true);
-                    cb.setStyle("-fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 13px;");
-                    filtrosDeporteUser.add(d.getNombre());
-                    cb.selectedProperty().addListener((obs, o, selected) -> {
-                        if (selected) filtrosDeporteUser.add(d.getNombre());
-                        else filtrosDeporteUser.remove(d.getNombre());
-                        aplicarFiltroReservasUser();
-                    });
-                    hboxFiltrosDeporteUser.getChildren().add(cb);
-                }
+            for (Deporte d : deporteService.getAll()) {
+                CheckBox cb = new CheckBox(d.getNombre());
+                cb.setSelected(true);
+                cb.setStyle("-fx-text-fill: rgba(255,255,255,0.85); -fx-font-size: 13px;");
+                filtrosDeporteUser.add(d.getNombre());
+                cb.selectedProperty().addListener((obs, o, selected) -> {
+                    if (selected) filtrosDeporteUser.add(d.getNombre());
+                    else filtrosDeporteUser.remove(d.getNombre());
+                    paginaReservas = 0;
+                    aplicarFiltroReservasUser();
+                });
+                hboxFiltrosDeporteUser.getChildren().add(cb);
             }
             aplicarFiltroReservasUser();
         } catch (Exception e) { e.printStackTrace(); }
@@ -236,8 +240,19 @@ public class UserController implements Initializable {
         List<Reserva> filtradas = todasReservasUser.stream()
                 .filter(r -> filtrosDeporteUser.contains(r.getDeporteNombre()))
                 .collect(java.util.stream.Collectors.toList());
-        tablaReservas.setItems(FXCollections.observableArrayList(filtradas));
+        int total = filtradas.size();
+        int totalPaginas = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
+        paginaReservas = Math.min(paginaReservas, totalPaginas - 1);
+        int desde = paginaReservas * PAGE_SIZE;
+        tablaReservas.setItems(FXCollections.observableArrayList(
+                filtradas.subList(desde, Math.min(desde + PAGE_SIZE, total))));
+        lblResPagina.setText("Página " + (paginaReservas + 1) + " de " + totalPaginas);
+        btnResPrev.setDisable(paginaReservas == 0);
+        btnResNext.setDisable(paginaReservas >= totalPaginas - 1);
     }
+
+    @FXML private void reservasPrevPage() { paginaReservas--; aplicarFiltroReservasUser(); }
+    @FXML private void reservasNextPage() { paginaReservas++; aplicarFiltroReservasUser(); }
 
     @FXML private void mostrarPerfil() {
         mostrarPanel(panelPerfil);
