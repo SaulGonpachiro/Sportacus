@@ -14,6 +14,8 @@ public class SportacusApp extends Application {
         );
         Scene scene = new Scene(loader.load(), 1400, 900);
         stage.setTitle("Sportacus");
+        stage.getIcons().add(new javafx.scene.image.Image(
+                SportacusApp.class.getResourceAsStream("images/logo.png")));
         stage.setScene(scene);
         stage.show();
     }

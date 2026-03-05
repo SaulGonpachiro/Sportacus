@@ -295,6 +295,7 @@ public class AdminController implements Initializable {
         if (sel == null) { mostrarAlerta("Selecciona una reserva."); return; }
         if ("CANCELADA".equals(sel.getEstado())) { mostrarAlerta("Esta reserva ya está cancelada."); return; }
         Alert c = new Alert(Alert.AlertType.CONFIRMATION);
+        estilizarAlert(c);
         c.setContentText("¿Cancelar la reserva #" + sel.getId() + "?");
         c.showAndWait().ifPresent(btn -> {
             if (btn == ButtonType.OK) {
@@ -313,6 +314,7 @@ public class AdminController implements Initializable {
         if (sel == null) { mostrarAlerta("Selecciona una reserva."); return; }
         if (!"CANCELADA".equals(sel.getEstado())) { mostrarAlerta("Solo se pueden eliminar reservas canceladas."); return; }
         Alert c = new Alert(Alert.AlertType.CONFIRMATION);
+        estilizarAlert(c);
         c.setContentText("¿Eliminar definitivamente la reserva #" + sel.getId() + "? Esta acción no se puede deshacer.");
         c.showAndWait().ifPresent(btn -> {
             if (btn == ButtonType.OK) {
@@ -421,6 +423,7 @@ public class AdminController implements Initializable {
         if (sel == null) { mostrarAlerta("Selecciona una pista."); return; }
         if (!sel.isActiva()) { mostrarAlerta("La pista ya está desactivada."); return; }
         Alert c = new Alert(Alert.AlertType.CONFIRMATION);
+        estilizarAlert(c);
         c.setContentText("¿Desactivar la pista '" + sel.getNombre() + "'?");
         c.showAndWait().ifPresent(btn -> {
             if (btn == ButtonType.OK) {
@@ -439,6 +442,7 @@ public class AdminController implements Initializable {
         if (sel == null) { mostrarAlerta("Selecciona una pista."); return; }
         if (sel.isActiva()) { mostrarAlerta("Solo se pueden eliminar pistas desactivadas."); return; }
         Alert c = new Alert(Alert.AlertType.CONFIRMATION);
+        estilizarAlert(c);
         c.setContentText("¿Eliminar definitivamente la pista '" + sel.getNombre() + "'?\nEsta acción no se puede deshacer.");
         c.showAndWait().ifPresent(btn -> {
             if (btn == ButtonType.OK) {
@@ -494,6 +498,7 @@ public class AdminController implements Initializable {
         }
         if (!sel.isActivo()) { mostrarAlerta("El usuario ya está desactivado."); return; }
         Alert c = new Alert(Alert.AlertType.CONFIRMATION);
+        estilizarAlert(c);
         c.setContentText("¿Desactivar al usuario " + sel.getEmail() + "?");
         c.showAndWait().ifPresent(btn -> {
             if (btn == ButtonType.OK) {
@@ -515,6 +520,7 @@ public class AdminController implements Initializable {
         }
         if (sel.isActivo()) { mostrarAlerta("Solo se pueden eliminar usuarios desactivados."); return; }
         Alert c = new Alert(Alert.AlertType.CONFIRMATION);
+        estilizarAlert(c);
         c.setContentText("¿Eliminar definitivamente al usuario " + sel.getEmail() + "?\nEsta acción no se puede deshacer.");
         c.showAndWait().ifPresent(btn -> {
             if (btn == ButtonType.OK) {
@@ -543,6 +549,7 @@ public class AdminController implements Initializable {
         Deporte sel = tablaDeportes.getSelectionModel().getSelectedItem();
         if (sel == null) { mostrarAlerta("Selecciona un deporte."); return; }
         Alert c = new Alert(Alert.AlertType.CONFIRMATION);
+        estilizarAlert(c);
         c.setContentText("¿Eliminar el deporte '" + sel.getNombre() + "'?\nSolo es posible si no tiene pistas asociadas.");
         c.showAndWait().ifPresent(btn -> {
             if (btn == ButtonType.OK) {
@@ -594,10 +601,22 @@ public class AdminController implements Initializable {
         };
     }
 
+    private void estilizarAlert(Alert a) {
+        a.getDialogPane().getStylesheets().add(
+            getClass().getResource("/org/example/sportacus/css/admin.css").toExternalForm());
+        a.getDialogPane().getStyleClass().add("dialog-pane");
+        a.setGraphic(null);
+        // Quitar icono del header
+        a.getDialogPane().setGraphic(null);
+    }
     private void mostrarAlerta(String msg) {
-        Alert a = new Alert(Alert.AlertType.WARNING); a.setHeaderText(null); a.setContentText(msg); a.showAndWait();
+        Alert a = new Alert(Alert.AlertType.WARNING);
+        a.setHeaderText(null); a.setContentText(msg);
+        estilizarAlert(a); a.showAndWait();
     }
     private void mostrarInfo(String msg) {
-        Alert a = new Alert(Alert.AlertType.INFORMATION); a.setHeaderText(null); a.setContentText(msg); a.showAndWait();
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setHeaderText(null); a.setContentText(msg);
+        estilizarAlert(a); a.showAndWait();
     }
 }

@@ -5,10 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane stylesheets="@../css/login.css"
-           xmlns="http://javafx.com/javafx/17.0.2-ea"
-           xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="org.example.sportacus.controller.LoginController">
+<StackPane stylesheets="@../css/login.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.sportacus.controller.LoginController">
 
     <children>
 
@@ -28,7 +25,7 @@
                     <Image url="@../images/logo_completo.png" />
                 </image>
                 <VBox.margin>
-                    <Insets right="80.0" />
+                    <Insets left="100.0" />
                 </VBox.margin>
             </ImageView>
 

@@ -59,6 +59,7 @@ public class UserController implements Initializable {
     @FXML private ComboBox<String> cboDuracion;
     @FXML private ListView<Pista> listPistasDisponibles;
     @FXML private Label lblPrecioEstimado;
+    @FXML private javafx.scene.control.Button btnConfirmarReserva;
 
     // Mis reservas
     @FXML private TableView<Reserva> tablaReservas;
@@ -136,8 +137,18 @@ public class UserController implements Initializable {
 
         dateFecha.setValue(LocalDate.now());
 
-        // Listener precio estimado
+        // Bloquear fechas pasadas en el DatePicker
+        dateFecha.setDayCellFactory(picker -> new javafx.scene.control.DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+                setDisable(empty || date.isBefore(LocalDate.now()));
+            }
+        });
+
+        // Habilitar botón Confirmar solo cuando hay pista seleccionada
         listPistasDisponibles.getSelectionModel().selectedItemProperty().addListener((obs, old, pista) -> {
+            btnConfirmarReserva.setDisable(pista == null);
             if (pista != null && cboDuracion.getValue() != null) {
                 long min = parseDuracion(cboDuracion.getValue());
                 double precio = pista.getPrecioHora().doubleValue() * (min / 60.0);
@@ -230,6 +241,7 @@ public class UserController implements Initializable {
         setNavActivo(navReservar);
         listPistasDisponibles.getItems().clear();
         lblPrecioEstimado.setText("Selecciona deporte, fecha y hora para buscar.");
+        btnConfirmarReserva.setDisable(true);
 
         if (nombreDeporte != null) {
             cboDeporte.getItems().stream()
@@ -371,6 +383,7 @@ public class UserController implements Initializable {
         try {
             List<Pista> disponibles = pistaService.getDisponibles(deporte.getId(), inicio, fin);
             listPistasDisponibles.setItems(FXCollections.observableArrayList(disponibles));
+            btnConfirmarReserva.setDisable(true);
             lblPrecioEstimado.setText(disponibles.isEmpty() ? "No hay pistas disponibles para ese horario." : "Selecciona una pista para ver el precio.");
         } catch (Exception e) {
             mostrarAlerta("Error al buscar: " + e.getMessage());
@@ -386,6 +399,7 @@ public class UserController implements Initializable {
         LocalDateTime fin = inicio.plusMinutes(parseDuracion(cboDuracion.getValue()));
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        estilizarAlert(confirm);
         confirm.setTitle("Confirmar reserva");
         confirm.setContentText("Reservar " + pista.getNombre() + "\n" +
                 inicio.format(FMT) + " - " + fin.format(DateTimeFormatter.ofPattern("HH:mm")) +
@@ -410,6 +424,7 @@ public class UserController implements Initializable {
         if ("CANCELADA".equals(sel.getEstado())) { mostrarAlerta("Esta reserva ya está cancelada."); return; }
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        estilizarAlert(confirm);
         confirm.setTitle("Cancelar reserva");
         confirm.setContentText("¿Cancelar la reserva en " + sel.getPistaNombre() + "?");
         confirm.showAndWait().ifPresent(btn -> {
@@ -429,6 +444,7 @@ public class UserController implements Initializable {
         if (!"CANCELADA".equals(sel.getEstado())) { mostrarAlerta("Solo se pueden eliminar reservas canceladas."); return; }
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        estilizarAlert(confirm);
         confirm.setTitle("Eliminar reserva");
         confirm.setContentText("¿Eliminar definitivamente esta reserva? Esta acción no se puede deshacer.");
         confirm.showAndWait().ifPresent(btn -> {
@@ -470,10 +486,22 @@ public class UserController implements Initializable {
         };
     }
 
+    private void estilizarAlert(Alert a) {
+        a.getDialogPane().getStylesheets().add(
+            getClass().getResource("/org/example/sportacus/css/user.css").toExternalForm());
+        a.getDialogPane().getStyleClass().add("dialog-pane");
+        a.setGraphic(null);
+        // Quitar icono del header
+        a.getDialogPane().setGraphic(null);
+    }
     private void mostrarAlerta(String msg) {
-        Alert a = new Alert(Alert.AlertType.WARNING); a.setHeaderText(null); a.setContentText(msg); a.showAndWait();
+        Alert a = new Alert(Alert.AlertType.WARNING);
+        a.setHeaderText(null); a.setContentText(msg);
+        estilizarAlert(a); a.showAndWait();
     }
     private void mostrarInfo(String msg) {
-        Alert a = new Alert(Alert.AlertType.INFORMATION); a.setHeaderText(null); a.setContentText(msg); a.showAndWait();
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setHeaderText(null); a.setContentText(msg);
+        estilizarAlert(a); a.showAndWait();
     }
 }

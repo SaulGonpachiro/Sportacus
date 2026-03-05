@@ -155,8 +155,8 @@
                             <Label fx:id="lblPrecioEstimado"
                                    text="Selecciona deporte, fecha y hora para buscar."
                                    wrapText="true" styleClass="precio-label"/>
-                            <Button text="✅  Confirmar Reserva" onAction="#confirmarReserva"
-                                    maxWidth="Infinity" styleClass="primary-button" minHeight="38"/>
+                            <Button fx:id="btnConfirmarReserva" text="✅  Confirmar Reserva" onAction="#confirmarReserva"
+                                    maxWidth="Infinity" styleClass="primary-button" minHeight="38" disable="true"/>
                         </VBox>
                     </HBox>
                 </VBox>

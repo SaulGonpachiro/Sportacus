@@ -67,3 +67,61 @@
     -fx-highlight-fill: rgba(255,140,0,0.45);
     -fx-highlight-text-fill: white;
 }
+
+/* =======================================================
+   DARK DIALOGS / ALERTS
+======================================================= */
+.dialog-pane {
+    -fx-background-color: #1a1a1a;
+    -fx-border-color: rgba(255,140,0,0.35);
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.80), 24, 0.3, 0, 8);
+}
+.dialog-pane .content.label {
+    -fx-text-fill: rgba(255,255,255,0.88);
+    -fx-font-size: 14px;
+}
+.dialog-pane .header-panel {
+    -fx-background-color: #141414;
+    -fx-background-radius: 12 12 0 0;
+}
+.dialog-pane .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+.dialog-pane:header .header-panel .graphic-container {
+    -fx-padding: 0;
+}
+.dialog-pane .button-bar .container {
+    -fx-background-color: #1a1a1a;
+}
+.dialog-pane .button-bar .button {
+    -fx-background-color: linear-gradient(to bottom, #ff9500, #e07b00);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-padding: 8 22 8 22;
+    -fx-cursor: hand;
+}
+.dialog-pane .button-bar .button:hover {
+    -fx-background-color: linear-gradient(to bottom, #ffaa22, #f08800);
+}
+.dialog-pane .button-bar .button:cancel-button {
+    -fx-background-color: rgba(255,255,255,0.08);
+    -fx-text-fill: rgba(255,255,255,0.70);
+}
+.dialog-pane .button-bar .button:cancel-button:hover {
+    -fx-background-color: rgba(255,255,255,0.15);
+    -fx-text-fill: white;
+}
+.dialog-pane .graphic-container .graphic {
+    visibility: hidden;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
