@@ -96,6 +96,10 @@
                         <Button text="Cancelar reserva" onAction="#cancelarReservaAdmin" styleClass="topbar-logout"/>
                         <Button text="Eliminar reserva" onAction="#eliminarReservaAdmin" styleClass="topbar-logout"/>
                     </HBox>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="txtBuscarReservas" promptText="🔍  Buscar por nombre de usuario..." prefWidth="340" styleClass="search-field"/>
+                        <Button text="✕" onAction="#limpiarBuscarReservas" styleClass="btn-clear-search"/>
+                    </HBox>
                     <HBox fx:id="hboxFiltrosDeporteAdmin" spacing="14" alignment="CENTER_LEFT">
                         <Label text="Filtrar por deporte:" styleClass="field-label"/>
                     </HBox>
@@ -165,6 +169,10 @@
                 <VBox fx:id="panelUsuarios" styleClass="content" spacing="12" visible="false" managed="false">
                     <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
                     <Label text="Gestion de Usuarios" styleClass="hero-title"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="txtBuscarUsuarios" promptText="🔍  Buscar por nombre o email..." prefWidth="340" styleClass="search-field"/>
+                        <Button text="✕" onAction="#limpiarBuscarUsuarios" styleClass="btn-clear-search"/>
+                    </HBox>
                     <HBox spacing="20" VBox.vgrow="ALWAYS">
                         <VBox spacing="8" HBox.hgrow="ALWAYS">
                             <HBox spacing="8">

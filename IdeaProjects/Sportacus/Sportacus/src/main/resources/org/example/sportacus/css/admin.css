@@ -607,3 +607,44 @@
     -fx-pref-height: 0;
 }
 
+
+/* ===== BUSCADOR ===== */
+.search-field {
+    -fx-background-color: rgba(40,40,40,0.95);
+    -fx-text-fill: #eaeaea;
+    -fx-prompt-text-fill: rgba(255,255,255,0.40);
+    -fx-border-color: rgba(255,140,0,0.45);
+    -fx-border-width: 1.5;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 9 14 9 14;
+    -fx-font-size: 14px;
+}
+
+.search-field:focused {
+    -fx-border-color: #ff8c00;
+    -fx-effect: dropshadow(gaussian, rgba(255,140,0,0.30), 14, 0.2, 0, 0);
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.btn-clear-search {
+    -fx-background-color: rgba(60,60,60,0.9);
+    -fx-text-fill: rgba(255,255,255,0.6);
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-border-color: rgba(255,255,255,0.12);
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-padding: 7 12 7 12;
+    -fx-cursor: hand;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.btn-clear-search:hover {
+    -fx-background-color: rgba(255,140,0,0.20);
+    -fx-text-fill: #ff8c00;
+    -fx-border-color: rgba(255,140,0,0.45);
+}

@@ -59,6 +59,8 @@ public class AdminController implements Initializable {
     @FXML private TableColumn<Reserva, String> colResFin;
     @FXML private TableColumn<Reserva, String> colResEstado;
     @FXML private javafx.scene.layout.HBox hboxFiltrosDeporteAdmin;
+    @FXML private TextField txtBuscarReservas;
+    @FXML private TextField txtBuscarUsuarios;
     private final java.util.Set<String> filtrosDeporteAdmin = new java.util.HashSet<>();
     private java.util.List<Reserva> todasReservasAdmin = new java.util.ArrayList<>();
     @FXML private TableColumn<Reserva, String> colResPrecio;
@@ -142,6 +144,18 @@ public class AdminController implements Initializable {
         configurarTablaDeportes();
 
         cboPistaDeporte.setItems(FXCollections.observableArrayList(deporteService.getAll()));
+
+        // Buscador reservas — filtra en tiempo real
+        txtBuscarReservas.textProperty().addListener((obs, oldVal, newVal) -> {
+            paginaReservas = 0;
+            aplicarFiltroReservasAdmin();
+        });
+
+        // Buscador usuarios — filtra en tiempo real
+        txtBuscarUsuarios.textProperty().addListener((obs, oldVal, newVal) -> {
+            paginaUsuarios = 0;
+            aplicarFiltroUsuarios();
+        });
 
         cargarDashboard();
     }
@@ -272,8 +286,10 @@ public class AdminController implements Initializable {
     }
 
     private void aplicarFiltroReservasAdmin() {
+        String busqueda = txtBuscarReservas != null ? txtBuscarReservas.getText().trim().toLowerCase() : "";
         List<Reserva> filtradas = todasReservasAdmin.stream()
                 .filter(r -> filtrosDeporteAdmin.contains(r.getDeporteNombre()))
+                .filter(r -> busqueda.isEmpty() || r.getUsuarioNombre().toLowerCase().contains(busqueda))
                 .collect(java.util.stream.Collectors.toList());
         int total = filtradas.size();
         int totalPaginas = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
@@ -474,16 +490,36 @@ public class AdminController implements Initializable {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    private void aplicarPaginaUsuarios() {
-        int total = todosUsuarios.size();
+    private void aplicarFiltroUsuarios() {
+        String busqueda = txtBuscarUsuarios != null ? txtBuscarUsuarios.getText().trim().toLowerCase() : "";
+        List<Usuario> filtrados = todosUsuarios.stream()
+                .filter(u -> busqueda.isEmpty()
+                        || u.getNombreCompleto().toLowerCase().contains(busqueda)
+                        || u.getEmail().toLowerCase().contains(busqueda))
+                .collect(java.util.stream.Collectors.toList());
+        int total = filtrados.size();
         int totalPaginas = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
         paginaUsuarios = Math.min(paginaUsuarios, totalPaginas - 1);
         int desde = paginaUsuarios * PAGE_SIZE;
         tablaUsuarios.setItems(FXCollections.observableArrayList(
-                todosUsuarios.subList(desde, Math.min(desde + PAGE_SIZE, total))));
+                filtrados.subList(desde, Math.min(desde + PAGE_SIZE, total))));
         lblUsuPagina.setText("Página " + (paginaUsuarios + 1) + " de " + totalPaginas);
         btnUsuPrev.setDisable(paginaUsuarios == 0);
         btnUsuNext.setDisable(paginaUsuarios >= totalPaginas - 1);
+    }
+
+    private void aplicarPaginaUsuarios() {
+        aplicarFiltroUsuarios();
+    }
+
+    @FXML private void limpiarBuscarReservas() {
+        txtBuscarReservas.clear();
+        txtBuscarReservas.requestFocus();
+    }
+
+    @FXML private void limpiarBuscarUsuarios() {
+        txtBuscarUsuarios.clear();
+        txtBuscarUsuarios.requestFocus();
     }
 
     @FXML private void usuariosPrevPage() { paginaUsuarios--; aplicarPaginaUsuarios(); }
