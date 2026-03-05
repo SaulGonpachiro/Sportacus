@@ -233,7 +233,7 @@ public class AdminController implements Initializable {
         colURUsuario.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getUsuarioNombre()));
         colURPista.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getPistaNombre()));
         colURInicio.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getInicio() != null ? c.getValue().getInicio().format(FMT) : ""));
-        colUREstado.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getEstado()));
+        colUREstado.setCellValueFactory(c -> new SimpleStringProperty(traducirEstado(c.getValue().getEstado())));
         colURPrecio.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getPrecioTotal() + " EUR"));
     }
 
@@ -244,7 +244,7 @@ public class AdminController implements Initializable {
         colResPista.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getPistaNombre()));
         colResInicio.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getInicio() != null ? c.getValue().getInicio().format(FMT) : ""));
         colResFin.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getFin() != null ? c.getValue().getFin().format(FMT) : ""));
-        colResEstado.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getEstado()));
+        colResEstado.setCellValueFactory(c -> new SimpleStringProperty(traducirEstado(c.getValue().getEstado())));
         colResPrecio.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getPrecioTotal() + " EUR"));
     }
 
@@ -581,6 +581,17 @@ public class AdminController implements Initializable {
             Stage stage = (Stage) lblAdminNombre.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    private String traducirEstado(String estado) {
+        if (estado == null) return "";
+        return switch (estado) {
+            case "CONFIRMADA" -> "Reservado";
+            case "CANCELADA"  -> "Cancelada";
+            case "PENDIENTE"  -> "Pendiente";
+            case "COMPLETADA" -> "Completada";
+            default -> estado;
+        };
     }
 
     private void mostrarAlerta(String msg) {

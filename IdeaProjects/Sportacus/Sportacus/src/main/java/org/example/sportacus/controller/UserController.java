@@ -145,6 +145,41 @@ public class UserController implements Initializable {
             }
         });
 
+        // Celda personalizada con detalles de la pista
+        listPistasDisponibles.setCellFactory(lv -> new javafx.scene.control.ListCell<Pista>() {
+            @Override
+            protected void updateItem(Pista pista, boolean empty) {
+                super.updateItem(pista, empty);
+                if (empty || pista == null) {
+                    setGraphic(null);
+                    return;
+                }
+                javafx.scene.layout.VBox box = new javafx.scene.layout.VBox(3);
+                box.setPadding(new javafx.geometry.Insets(8, 10, 8, 10));
+
+                javafx.scene.control.Label nombre = new javafx.scene.control.Label(
+                        "🏟  " + pista.getNombre());
+                nombre.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #ffffff;");
+
+                // Detalles: superficie, precio, cubierta, iluminación, capacidad
+                StringBuilder detalles = new StringBuilder();
+                if (pista.getTipoSuperficie() != null && !pista.getTipoSuperficie().isBlank())
+                    detalles.append(pista.getTipoSuperficie());
+                detalles.append("  •  ").append(String.format("%.2f €/h", pista.getPrecioHora().doubleValue()));
+                if (pista.isCubierta())    detalles.append("  •  🏠 Cubierta");
+                if (pista.isIluminacion()) detalles.append("  •  💡 Iluminación");
+                if (pista.getCapacidad() != null && pista.getCapacidad() > 0)
+                    detalles.append("  •  👥 ").append(pista.getCapacidad()).append(" personas");
+
+                javafx.scene.control.Label info = new javafx.scene.control.Label(detalles.toString());
+                info.setStyle("-fx-font-size: 12px; -fx-text-fill: rgba(255,255,255,0.60);");
+
+                box.getChildren().addAll(nombre, info);
+                setGraphic(box);
+                setText(null);
+            }
+        });
+
         cargarProximas();
     }
 
